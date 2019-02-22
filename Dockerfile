@@ -1,4 +1,4 @@
-FROM phusion/baseimage:latest
+FROM phusion/baseimage:latest as builder-image
 
 ENV ENKETO_SRC_DIR=/srv/src/enketo_express
 
@@ -30,16 +30,27 @@ COPY ./package.json ${ENKETO_SRC_DIR}/
 RUN npm install --production
 
 COPY . ${ENKETO_SRC_DIR}
+
+# create the config (migrated from 01_setup_enketo.bash)
+RUN python setup/docker/create_config.py
+
+# directly execute the grunt build (migrated from 01_setup_enketo.bash)
+RUN grunt
+
+# Now we can copy over the built project to our running image (results in smaller docker image size)
+FROM node:8-stretch-slim as runner-image
+
+ENV ENKETO_SRC_DIR=/srv/src/enketo_express
+
+COPY --from=builder-image ${ENKETO_SRC_DIR} ${ENKETO_SRC_DIR}
+
+WORKDIR ${ENKETO_SRC_DIR}/
+
 ENV PATH $PATH:${KPI_SRC_DIR}/node_modules/.bin
 
 # Persist the `secrets` directory so the encryption key remains consistent.
 RUN mkdir -p ${ENKETO_SRC_DIR}/setup/docker/secrets
 VOLUME ${ENKETO_SRC_DIR}/setup/docker/secrets
 
-# Prepare for execution.
-RUN ln -s "${ENKETO_SRC_DIR}/setup/docker/01_setup_enketo.bash" /etc/my_init.d/ && \
-    mkdir -p /etc/service/enketo_express && \
-    ln -s "${ENKETO_SRC_DIR}/setup/docker/run_enketo.bash" /etc/service/enketo_express/run
-
-
 EXPOSE 8005
+CMD [ "npm", "start" ]
