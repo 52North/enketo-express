@@ -1,0 +1,55 @@
+version: '3.4'
+services:
+  nginx:
+    image: nginx
+    network_mode: host
+#    links:
+#      - enketo_express
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - ./envfile.txt
+    volumes:
+      - ./nginx-host-network/:/tmp/enketo_express_nginx/:ro
+      - ./secrets/:/tmp/enketo_express_secrets/:ro
+      - ../../config/:/srv/src/enketo_express/config/
+    command: bash /tmp/enketo_express_nginx/nginx_command.bash
+    restart: on-failure
+
+  enketo_express:
+    # image: kobotoolbox/enketo_express
+    build: ../..
+    network_mode: host
+#    links:
+#      - redis_main
+#      - redis_cache
+    ports:
+      - "8005:8005"
+    env_file:
+      - ./envfile.txt
+    volumes:
+      - ../../config/:/srv/src/enketo_express/config
+      - ./secrets/:/srv/src/enketo_express/setup/docker/secrets/
+    restart: on-failure
+
+  redis_main:
+    image: redis:2.6
+#    network_mode: host
+    # Map our "main" Redis config into the container.
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../redis/conf/redis-enketo-main.conf:/etc/redis/redis.conf:ro
+      - ./redis_main_data/:/data/
+    restart: on-failure
+
+  redis_cache:
+    image: redis:2.6
+#    network_mode: host
+    ports:
+      - "6380:6379"
+    # Map our "cache" Redis config into the container.
+    volumes:
+      - ../redis/conf/redis-enketo-cache.conf:/etc/redis/redis.conf:ro
+    restart: on-failure

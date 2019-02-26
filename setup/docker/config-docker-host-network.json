@@ -13,7 +13,7 @@
         "api key": "enketorules", 
         "name": "KoBoCAT", 
         "encryption key": "IAhbSAGvSqVdahbnC8ebjwlXsmPjxTJnsF6WEyTLUo7PEbawl4idUHlthmu2JvO7AfRlCdmPikZwEbEMEciohYS1tXSiZh+R6Pq87oEK1YAOGATT5RlyVYEfWpOf9cHrmeQS7G+srmzgPqq0xeQsI37RALClubKhfz33v5BEOamgfoRYW6lArM2PJgkyEuBuh8HbVIzy8Eo9iX74I11XneOguP2WwedyiCWvkgJmvP1aO4hg4yqp9U4VoynpM5PlBup78BoKwU1pQ5qUtHM4oPCXa8oNAXmqltdR8keEljT4pgwGpA91kiZ3t+tm45lCBGjzMFEhcOJV6aS5mMLYVw==", 
-        "server url": "odkaggregator_container", 
+        "server url": "localhost:8080", 
         "authentication": {
             "allow insecure transport": "false", 
             "type": "basic"
@@ -40,12 +40,12 @@
     }, 
     "redis": {
         "cache": {
-            "host": "redis_cache", 
+            "host": "localhost", 
             "password": null, 
-            "port": "6379"
+            "port": "6380"
         }, 
         "main": {
-            "host": "redis_main", 
+            "host": "localhost", 
             "password": null, 
             "port": "6379"
         }
