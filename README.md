@@ -1,3 +1,7 @@
+# ARCHIVED
+
+This project is no longer maintained and will not receive any further updates. If you plan to continue using it, please be aware that future security issues will not be addressed.
+
 Enketo Express [![Build Status](https://travis-ci.org/enketo/enketo-express.svg?branch=master)](https://travis-ci.org/enketo/enketo-express) [![Dependency Status](https://david-dm.org/enketo/enketo-express.svg)](https://david-dm.org/enketo/enketo-express) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/609aaf6fa764454f901f1c8a427264ff)](https://www.codacy.com/app/martijnr/enketo-express?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=enketo/enketo-express&amp;utm_campaign=Badge_Grade)
 ==============
 
